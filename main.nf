@@ -68,10 +68,10 @@ workflow {
     ch_model = Channel.fromPath(params.model)
     ch_batches = Channel.fromPath(params.batches)
 
-    SEQKIT(reads_ch)
+    SEQKIT(ch_reads)
 
     ALIGN_BATCH(
-        reads_ch,
+        ch_reads,
         SEQKIT.out.reads_ids,
         batch_py
     )
