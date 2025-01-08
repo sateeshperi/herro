@@ -43,7 +43,7 @@ process ALIGN_BATCH {
 }
 
 process ERROR_CORRECTION {
-    container "public.ecr.aws/l0c7p3y3/lbcb-sci/herro:2024-12-19"
+    container "public.ecr.aws/l0c7p3y3/lbcb-sci/herro:2025-01-07"
 
     publishDir "${params.outdir}/corrected/", mode: 'copy'
 
@@ -68,17 +68,17 @@ workflow {
     ch_model = Channel.fromPath(params.model)
     ch_batches = Channel.fromPath(params.batches)
 
-    // SEQKIT(reads_ch)
+    SEQKIT(reads_ch)
 
-    // ALIGN_BATCH(
-    //     reads_ch,
-    //     SEQKIT.out.reads_ids,
-    //     batch_py
-    // )
-
-    ERROR_CORRECTION(
-        ch_reads,
-        ch_batches,
-        ch_model
+    ALIGN_BATCH(
+        reads_ch,
+        SEQKIT.out.reads_ids,
+        batch_py
     )
+
+    // ERROR_CORRECTION(
+    //    ch_reads,
+    //    ch_batches,
+    //    ch_model
+    //)
 }
